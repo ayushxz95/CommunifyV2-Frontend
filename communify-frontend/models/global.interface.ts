@@ -40,3 +40,10 @@ export interface IPost {
   createdAt: Number,
   updatedAt: Number,
 }
+
+export interface IPostForCreate {
+  title: string,
+  description: string,
+  authorId: string,
+  tags: Array<String>,
+}

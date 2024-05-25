@@ -65,7 +65,7 @@ export const logoutUser = createAsyncThunk<void, { userId: string; refreshToken:
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': accessToken,
+          'Authorization': `Bearer ${accessToken}`,
         },
         body: JSON.stringify({ userId, refreshToken }),
       });

@@ -1,9 +1,9 @@
 import { INITIAL_APP_STORE } from '@/constants';
-import { IPost } from '@/models';
+import { IPost, IPostForCreate } from '@/models';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { RootState } from './store';
 
-const API_BASE_URL = 'http://localhost:4000/api/v1/posts';
+const API_BASE_URL = 'http://localhost:4000/api/v1/post';
 
 export const fetchAllPosts = createAsyncThunk('posts/fetchAllPosts', async (_, { rejectWithValue }) => {
   try {
@@ -31,12 +31,14 @@ export const fetchPostById = createAsyncThunk('posts/fetchPostById', async (post
   }
 });
 
-export const createPost = createAsyncThunk('posts/createPost', async (postData: IPost, { rejectWithValue }) => {
+export const createPost = createAsyncThunk<void, { postData: IPostForCreate, refreshToken: string, accessToken: string }>('posts/createPost',
+  async ({ postData, refreshToken, accessToken }, { rejectWithValue }) => {
   try {
     const response = await fetch(API_BASE_URL + '/create', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`,
       },
       body: JSON.stringify(postData),
     });
@@ -118,7 +120,14 @@ export const autoCompleteSearchPost = createAsyncThunk(
 const postSlice = createSlice({
   name: 'posts',
   initialState: INITIAL_APP_STORE.post,
-  reducers: {},
+  reducers: {
+    updateTitle: (state, action) => {
+      state.title = action.payload;
+    },
+    updateTag: (state, action) => {
+      state.tags = action.payload;
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchAllPosts.pending, (state) => {
@@ -212,6 +221,7 @@ const postSlice = createSlice({
   },
 });
 
+export const { updateTitle, updateTag } = postSlice.actions;
 export const selectPosts = (state: RootState) => state.posts.posts;
 export const selectLoading = (state: RootState) => state.posts.loading;
 export const selectError = (state: RootState) => state.posts.error;

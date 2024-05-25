@@ -14,15 +14,37 @@ import { EDITOR_API_KEY } from "@/config";
 import { Editor } from "@tinymce/tinymce-react";
 import { useRef, useState } from "react";
 import { FaPlus } from "react-icons/fa";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Card from "../../components/card";
 import Footer from "../../components/footer";
 import Navbar from "../../components/navBar";
+import { RootState } from "@/store/store";
+import { createPost, updateTag, updateTitle } from "@/store/postSlice";
 
 export default function Home() {
     const dispatch = useDispatch();
     const editor = useRef(null);
     const [editorContent, setEditorContent] = useState<string>("");
+    const posts = useSelector((state: RootState) => state.posts);
+    const auth = useSelector((state: RootState) => state.auth);
+
+    const handleTitleChange = (e: any) => {
+        dispatch(updateTitle(e.target.value));
+    };
+
+    const handleTagChange = (e: any) => {
+        dispatch(updateTag(e.target.value));
+    };
+
+    const handleSubmit = () => {
+        const postData = {
+            title: posts?.title,
+            description: "",
+            tags: posts?.tags,
+            authorId: auth?.user?._id
+        }
+        dispatch(createPost({ postData: postData, refreshToken: auth.refreshToken, accessToken: auth.accessToken}));
+    }
 
     const handleImageUpload = async (blobInfo: any, success: any, failure: any) => {
         console.log('I am here');
@@ -98,7 +120,7 @@ export default function Home() {
                                     <Label htmlFor="title" className="text-green-500">
                                         Enter your question title
                                     </Label>
-                                    <Input id="title" placeholder="Start the question" />
+                                    <Input id="title" placeholder="Start the question" onChange={handleTitleChange} />
                                 </div>
                                 <div className="grid w-full items-center gap-2">
                                     <Label htmlFor="description" className="text-green-500">
@@ -145,7 +167,7 @@ export default function Home() {
                                     <Label htmlFor="tag" className="text-green-500">
                                         Tag
                                     </Label>
-                                    <Input id="tag" placeholder="i.e React, CSS, HTML" />
+                                    <Input id="tag" placeholder="i.e React, CSS, HTML" onChange={handleTagChange} />
                                 </div>
                                 <div className="flex ml-auto mt-4 gap-4">
                                     <DialogClose>
@@ -154,7 +176,7 @@ export default function Home() {
                                         </div>
                                     </DialogClose>
                                     <div
-                                        // onClick={handleSubmit}
+                                        onClick={handleSubmit}
                                         className="flex items-center justify-center cursor-pointer border-2 w-20 bg-green-500 text-white rounded-full px-12 py-2 font-semibold hover:bg-white hover:text-green-500"
                                     >
                                         Submit

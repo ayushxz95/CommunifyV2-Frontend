@@ -24,6 +24,8 @@ interface IPostStore {
     posts: IPost[];
     loading: boolean;
     error: string | null;
+    title: string | null;
+    tags: string | null;
 }
 
 interface IUserStore {
