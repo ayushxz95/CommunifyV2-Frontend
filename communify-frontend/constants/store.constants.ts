@@ -25,7 +25,7 @@ export const INITIAL_APP_STORE: IStore = {
   post: {
     posts: [],
     title: '',
-    tags: '',
+    tags: [],
     loading: false,
     error: null
   },
