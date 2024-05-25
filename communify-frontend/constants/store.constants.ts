@@ -2,9 +2,18 @@ import { IStore } from "../models";
 
 export const INITIAL_APP_STORE: IStore = {
   auth: {
-    user: null,
-    accessToken: null,
-    refreshToken: null,
+    user: {
+      _id: "",
+      username: "",
+      email: "",
+      password: "",
+      profilePicture: "",
+      about: "",
+      createdAt: 0,
+      updatedAt: 0
+    },
+    accessToken: "",
+    refreshToken: "",
     loading: false,
     error: null
   },
@@ -33,7 +42,7 @@ export const INITIAL_APP_STORE: IStore = {
   upload: {
     loading: false,
     error: null,
-    imageUrl: null,
-    fileName: null
+    imageUrl: "",
+    fileName: ""
   }
 };

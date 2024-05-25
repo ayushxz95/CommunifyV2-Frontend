@@ -1,9 +1,9 @@
 import { IAnswer, IComment, IPost, IUser } from ".";
 
 interface IAuthStore {
-    user: IUser | null;
-    accessToken: string | null;
-    refreshToken: string | null;
+    user?: IUser;
+    accessToken: string;
+    refreshToken: string;
     loading: boolean;
     error: string | null;
 }
@@ -24,12 +24,12 @@ interface IPostStore {
     posts: IPost[];
     loading: boolean;
     error: string | null;
-    title: string | null;
-    tags: string | null;
+    title: string;
+    tags: [];
 }
 
 interface IUserStore {
-    user?: IUser | null;
+    user?: IUser;
     users: IUser[];
     loading: boolean;
     error: string | null;
@@ -38,8 +38,8 @@ interface IUserStore {
 interface IUploadStore {
     loading: boolean;
     error: string | null;
-    imageUrl: string | null;
-    fileName: string | null;
+    imageUrl: string;
+    fileName: string;
 }
 
 export interface IStore {

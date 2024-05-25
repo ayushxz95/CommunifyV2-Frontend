@@ -1,15 +1,15 @@
 'use client'
-import { FaGoogle, FaGithub, FaLinkedinIn, FaRegEnvelope, FaUser } from "react-icons/fa";
-import { MdLockOutline } from 'react-icons/md';
-import { signIn, signOut, useSession } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { useState, useEffect } from "react";
-import type { RootState } from '../../store/store';
-import { useSelector, useDispatch } from 'react-redux'
+import { useEffect, useState } from "react";
+import { FaGithub, FaGoogle, FaLinkedinIn, FaRegEnvelope, FaUser } from "react-icons/fa";
+import { MdLockOutline } from 'react-icons/md';
+import { useSelector } from 'react-redux';
 import { signInUser, signUpUser } from '../../store/authSlice';
+import { useAppDispatch, type RootState } from '../../store/store';
 
 export default function Auth() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const user = useSelector((state: RootState) => state.auth.user)
   const { data: session } = useSession();
   const [isSignUpTabSelected, setSignUpTabSelected] = useState<boolean>(false);
@@ -21,7 +21,7 @@ export default function Auth() {
   const router = useRouter();
 
   const abc = useSelector((state: RootState) => console.log(state));
-  
+
   useEffect(() => {
     if (user) {
       router.push('/home');
@@ -68,11 +68,11 @@ export default function Auth() {
     }
   };
 
-  const handleSignUp = async (username: String) => {
+  const handleSignUp = async (username: string) => {
     console.log(username, 'username');
 
     try {
-      const action = await dispatch(signUpUser({username, email, password }));
+      const action = await dispatch(signUpUser({ username, email, password }));
 
       if (signUpUser.fulfilled.match(action)) {
         const userData = action.payload;
@@ -150,74 +150,74 @@ export default function Auth() {
             <div className="flex flex-col items-center">
               {isSignUpTabSelected && (
                 <div>
-                <div className="bg-gray-100 w-64 p-2 flex items-center">
-                  <FaUser className="text-gray-400 m-2" />
-                  <input
-                    type="text"
-                    name="Name"
-                    placeholder="First Name"
-                    className="bg-gray-100 outline-none text-sm flex-1"
-                    value={firstName}
-                    onChange={handleInputChange}
-                  />
-                </div>
-                <div className="flex text-start mb-3">
-                      {errors['Name'] && <span className="text-red-500 text-xs">{errors['Name']}</span>}
-                </div>
+                  <div className="bg-gray-100 w-64 p-2 flex items-center">
+                    <FaUser className="text-gray-400 m-2" />
+                    <input
+                      type="text"
+                      name="Name"
+                      placeholder="First Name"
+                      className="bg-gray-100 outline-none text-sm flex-1"
+                      value={firstName}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                  <div className="flex text-start mb-3">
+                    {errors['Name'] && <span className="text-red-500 text-xs">{errors['Name']}</span>}
+                  </div>
                 </div>
               )}
 
               {isSignUpTabSelected && (
                 <div>
-                <div className="bg-gray-100 w-64 p-2 flex items-center">
-                  <FaUser className="text-gray-400 m-2" />
-                  <input
-                    type="text"
-                    name="Last Name"
-                    placeholder="Last Name"
-                    className="bg-gray-100 outline-none text-sm flex-1"
-                    value={lastName}
-                    onChange={handleInputChange}
-                  />
-                </div>
-                <div className="flex text-start mb-3">
-                  {errors['Last Name'] && <span className="text-red-500 text-xs">{errors['Last Name']}</span>}
-                </div>
+                  <div className="bg-gray-100 w-64 p-2 flex items-center">
+                    <FaUser className="text-gray-400 m-2" />
+                    <input
+                      type="text"
+                      name="Last Name"
+                      placeholder="Last Name"
+                      className="bg-gray-100 outline-none text-sm flex-1"
+                      value={lastName}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                  <div className="flex text-start mb-3">
+                    {errors['Last Name'] && <span className="text-red-500 text-xs">{errors['Last Name']}</span>}
+                  </div>
                 </div>
               )}
 
               <div>
-              <div className="bg-gray-100 w-64 p-2 flex items-center">
-                <FaRegEnvelope className="text-gray-400 m-2" />
-                <input
-                  type="email"
-                  name="Email"
-                  placeholder="Email"
-                  className="bg-gray-100 outline-none text-sm flex-1"
-                  value={email}
-                  onChange={handleInputChange}
-                />
-              </div>
-              <div className="flex text-start mb-3">
-                 {errors['Email'] && <span className="text-red-500 text-xs">{errors['Email']}</span>}
-              </div>
+                <div className="bg-gray-100 w-64 p-2 flex items-center">
+                  <FaRegEnvelope className="text-gray-400 m-2" />
+                  <input
+                    type="email"
+                    name="Email"
+                    placeholder="Email"
+                    className="bg-gray-100 outline-none text-sm flex-1"
+                    value={email}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div className="flex text-start mb-3">
+                  {errors['Email'] && <span className="text-red-500 text-xs">{errors['Email']}</span>}
+                </div>
               </div>
 
               <div>
-              <div className="bg-gray-100 w-64 p-2 flex items-center">
-                <MdLockOutline className="text-gray-400 m-2" />
-                <input
-                  type="password"
-                  name="Password"
-                  placeholder="Password"
-                  className="bg-gray-100 outline-none text-sm flex-1"
-                  value={password}
-                  onChange={handleInputChange}
-                />
-              </div>
-              <div className="flex text-start mb-3">
-                {errors['Password'] && <span className="text-red-500 text-xs">{errors['Password']}</span>}
-              </div>
+                <div className="bg-gray-100 w-64 p-2 flex items-center">
+                  <MdLockOutline className="text-gray-400 m-2" />
+                  <input
+                    type="password"
+                    name="Password"
+                    placeholder="Password"
+                    className="bg-gray-100 outline-none text-sm flex-1"
+                    value={password}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div className="flex text-start mb-3">
+                  {errors['Password'] && <span className="text-red-500 text-xs">{errors['Password']}</span>}
+                </div>
               </div>
 
               <div className="flex justify-between w-64 mb-5">
@@ -229,7 +229,7 @@ export default function Auth() {
               </div>
               <button
                 className="border-2 border-green-500 text-green-500 rounded-full px-12 py-2 inline-block font-semibold hover:bg-green-500 hover:text-white"
-                onClick={() => {handleSubmit(isSignUpTabSelected)}}
+                onClick={() => { handleSubmit(isSignUpTabSelected) }}
               >
                 {!isSignUpTabSelected ?
                   "Sign In"

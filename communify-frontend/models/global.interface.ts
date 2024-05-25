@@ -30,6 +30,13 @@ export interface IComment {
   updatedAt: Number,
 }
 
+export interface IPostForCreate {
+  title: string,
+  description: string,
+  authorId: string,
+  tags: Array<String>,
+}
+
 export interface IPost {
   id: string,
   title: string,
@@ -39,11 +46,4 @@ export interface IPost {
   images: Array<String>,
   createdAt: Number,
   updatedAt: Number,
-}
-
-export interface IPostForCreate {
-  title: string,
-  description: string,
-  authorId: string,
-  tags: Array<String>,
 }

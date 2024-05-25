@@ -11,18 +11,18 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { EDITOR_API_KEY } from "@/config";
+import { createPost, updateTag, updateTitle } from "@/store/postSlice";
+import { RootState, useAppDispatch } from "@/store/store";
 import { Editor } from "@tinymce/tinymce-react";
 import { useRef, useState } from "react";
 import { FaPlus } from "react-icons/fa";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import Card from "../../components/card";
 import Footer from "../../components/footer";
 import Navbar from "../../components/navBar";
-import { RootState } from "@/store/store";
-import { createPost, updateTag, updateTitle } from "@/store/postSlice";
 
 export default function Home() {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const editor = useRef(null);
     const [editorContent, setEditorContent] = useState<string>("");
     const posts = useSelector((state: RootState) => state.posts);
@@ -40,10 +40,10 @@ export default function Home() {
         const postData = {
             title: posts?.title,
             description: "",
-            tags: posts?.tags,
-            authorId: auth?.user?._id
+            tags: Array.isArray(posts?.tags) ? posts.tags : [],
+            authorId: auth?.user?._id || ""
         }
-        dispatch(createPost({ postData: postData, refreshToken: auth.refreshToken, accessToken: auth.accessToken}));
+        dispatch(createPost({ postData: postData, refreshToken: auth.refreshToken, accessToken: auth.accessToken }));
     }
 
     const handleImageUpload = async (blobInfo: any, success: any, failure: any) => {
@@ -71,12 +71,13 @@ export default function Home() {
     };
 
     const customFilePicker = (callback: any, value: any, meta: any) => {
-        console.log('I am here');
+        console.log('I am Whereeererhere');
         if (meta.filetype === "image") {
             const input = document.createElement("input");
             input.setAttribute("type", "file");
             input.setAttribute("accept", "image/*");
             input.onchange = async function () {
+                // @ts-ignore: Unreachable code error
                 const file = input.files[0];
                 const blobInfo = await new Promise<any>((resolve) => {
                     const reader = new FileReader();
@@ -157,6 +158,7 @@ export default function Home() {
                                                 images_upload_url: "http://localhost:4000/api/v1/upload/signed/url",
                                                 automatic_uploads: true,
                                                 images_reuse_filename: true,
+                                                // @ts-ignore: Unreachable code error
                                                 images_upload_handler: handleImageUpload,
                                                 file_picker_callback: customFilePicker,
                                             }}

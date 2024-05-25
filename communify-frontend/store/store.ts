@@ -1,4 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
+import { useDispatch } from 'react-redux';
 import logger from 'redux-logger';
 import answerReducer from './answerSlice';
 import authReducer from './authSlice';
@@ -14,12 +15,12 @@ const localStorageMiddleware = (store: any) => (next: any) => (action: any) => {
   return result;
 };
 
-const persistedState = localStorage.getItem('reduxState')
-  ? JSON.parse(localStorage.getItem('reduxState') || '')
-  : {};
+const persistedState = localStorage.getItem('reduxState');
+const initialState = persistedState ? JSON.parse(persistedState) : {};
 
 export const store = configureStore({
   reducer: {
+    // @ts-ignore: Unreachable code error
     user: userReducer,
     auth: authReducer,
     posts: postReducer,
@@ -27,14 +28,13 @@ export const store = configureStore({
     comments: commentReducer,
     upload: uploadReducer,
   },
-  // middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
+  // @ts-ignore: Unreachable code error
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(logger, localStorageMiddleware),
-  preloadedState: persistedState,
+  preloadedState: initialState,
 })
 
-// Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>
-// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
 export type AppDispatch = typeof store.dispatch;
+export const useAppDispatch = useDispatch.withTypes<any>();
 
