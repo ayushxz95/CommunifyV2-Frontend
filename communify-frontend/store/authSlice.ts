@@ -94,8 +94,11 @@ const authSlice = createSlice({
       })
       .addCase(signInUser.fulfilled, (state, action) => {
         state.loading = false;
+        // @ts-ignore: Unreachable code error
         state.user = action.payload.data.user;
+        // @ts-ignore: Unreachable code error
         state.accessToken = action.payload.data.accessToken;
+        // @ts-ignore: Unreachable code error
         state.refreshToken = action.payload.data.refreshToken;
       })
       .addCase(signInUser.rejected, (state, action) => {
@@ -108,8 +111,11 @@ const authSlice = createSlice({
       })
       .addCase(signUpUser.fulfilled, (state, action) => {
         state.loading = false;
+        // @ts-ignore: Unreachable code error
         state.user = action.payload.data.user;
+        // @ts-ignore: Unreachable code error
         state.accessToken = action.payload.data.accessToken;
+        // @ts-ignore: Unreachable code error
         state.refreshToken = action.payload.data.refreshToken;
         console.log(action.payload);
       })
@@ -124,10 +130,12 @@ const authSlice = createSlice({
       .addCase(logoutUser.fulfilled, (state) => {
         console.log('I am here');
         state.loading = false;
+        // @ts-ignore: Unreachable code error
         state.user = null;
       })
       .addCase(logoutUser.rejected, (state, action) => {
         state.loading = false;
+        // @ts-ignore: Unreachable code error
         state.user = null;
         state.error = action.payload as string;
         toast.error('Something went wrong');

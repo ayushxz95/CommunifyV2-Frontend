@@ -33,24 +33,24 @@ export const fetchPostById = createAsyncThunk('posts/fetchPostById', async (post
 
 export const createPost = createAsyncThunk<void, { postData: IPostForCreate, refreshToken: string, accessToken: string }>('posts/createPost',
   async ({ postData, refreshToken, accessToken }, { rejectWithValue }) => {
-  try {
-    const response = await fetch(API_BASE_URL + '/create', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${accessToken}`,
-      },
-      body: JSON.stringify(postData),
-    });
-    if (!response.ok) {
-      throw new Error('Failed to create post');
+    try {
+      const response = await fetch(API_BASE_URL + '/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify(postData),
+      });
+      if (!response.ok) {
+        throw new Error('Failed to create post');
+      }
+      const data = await response.json();
+      return data.post;
+    } catch (error) {
+      return rejectWithValue('Failed to create post');
     }
-    const data = await response.json();
-    return data.post;
-  } catch (error) {
-    return rejectWithValue('Failed to create post');
-  }
-});
+  });
 
 export const updatePostById = createAsyncThunk(
   'posts/updatePostById',
@@ -136,6 +136,7 @@ const postSlice = createSlice({
       })
       .addCase(fetchAllPosts.fulfilled, (state, action) => {
         state.loading = false;
+        console.log(action.payload, "fetch vali check");
         state.posts = action.payload;
       })
       .addCase(fetchAllPosts.rejected, (state, action) => {

@@ -31,8 +31,8 @@ const uploadSlice = createSlice({
       .addCase(uploadImage.pending, (state) => {
         state.loading = true;
         state.error = null;
-        state.imageUrl = null;
-        state.fileName = null;
+        state.imageUrl = "";
+        state.fileName = "";
       })
       .addCase(uploadImage.fulfilled, (state, action) => {
         state.loading = false;

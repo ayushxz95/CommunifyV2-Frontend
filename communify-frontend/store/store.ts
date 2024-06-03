@@ -1,3 +1,4 @@
+import { IStore } from '@/models/store.interface';
 import { configureStore } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
 import logger from 'redux-logger';
@@ -16,7 +17,7 @@ const localStorageMiddleware = (store: any) => (next: any) => (action: any) => {
 };
 
 const persistedState = localStorage.getItem('reduxState');
-const initialState = persistedState ? JSON.parse(persistedState) : {};
+const initialState: Partial<IStore> = persistedState ? JSON.parse(persistedState) : {};
 
 export const store = configureStore({
   reducer: {
