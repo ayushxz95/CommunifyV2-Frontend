@@ -1,10 +1,90 @@
 import { INITIAL_APP_STORE } from '@/constants';
-import { IUser } from '@/models';
+import { ISignInAndSignUpResponse } from '@/models';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import Cookies from 'js-cookie';
 import { toast } from 'react-toastify';
 import type { RootState } from './store';
 
-export const signInUser = createAsyncThunk<IUser, { email: string; password: string }>(
+
+// export const signInUser = createAsyncThunk<IUser, { email: string; password: string }>(
+//   'auth/signInUser',
+//   async ({ email, password }, { rejectWithValue }) => {
+//     try {
+//       const response = await fetch('http://localhost:4000/api/v1/auth/signin', {
+//         method: 'POST',
+//         headers: {
+//           'Content-Type': 'application/json',
+//         },
+//         body: JSON.stringify({ email, password }),
+//       });
+
+//       if (!response.ok) {
+//         const errorData = await response.json();
+//         return rejectWithValue(errorData.message);
+//       }
+
+//       const userData: IUser = await response.json();
+//       return userData;
+//     } catch (error) {
+//       return rejectWithValue('An error occurred during sign in');
+//     }
+//   }
+// );
+
+
+// export const signUpUser = createAsyncThunk<IUser, { username: string; email: string; password: string }>(
+//   'auth/signUpUser',
+//   async ({ username, email, password }, { rejectWithValue }) => {
+//     console.log(username, email, password);
+//     try {
+//       const response = await fetch('http://localhost:4000/api/v1/auth/signup', {
+//         method: 'POST',
+//         headers: {
+//           'Content-Type': 'application/json',
+//         },
+//         body: JSON.stringify({ username, email, password }),
+//       });
+
+//       if (!response.ok) {
+//         const errorData = await response.json();
+//         return rejectWithValue(errorData.message);
+//       }
+
+//       const userData: IUser = await response.json();
+//       return userData;
+//     } catch (error) {
+//       return rejectWithValue('An error occurred during sign up');
+//     }
+//   }
+// );
+
+// export const logoutUser = createAsyncThunk<void, { userId: string; refreshToken: string, accessToken: string }>(
+//   'auth/logoutUser',
+//   async ({ userId, refreshToken, accessToken }, { rejectWithValue }) => {
+//     console.log('I am in logout');
+//     try {
+//       const response = await fetch('http://localhost:4000/api/v1/auth/logout', {
+//         method: 'POST',
+//         headers: {
+//           'Content-Type': 'application/json',
+//           'Authorization': `Bearer ${accessToken}`,
+//         },
+//         body: JSON.stringify({ userId, refreshToken }),
+//       });
+
+//       if (!response.ok) {
+//         const errorData = await response.json();
+//         return rejectWithValue(errorData.message);
+//       }
+
+//       return;
+//     } catch (error) {
+//       return rejectWithValue('An error occurred during logout');
+//     }
+//   }
+// );
+
+export const signInUser = createAsyncThunk<ISignInAndSignUpResponse, { email: string; password: string }>(
   'auth/signInUser',
   async ({ email, password }, { rejectWithValue }) => {
     try {
@@ -21,7 +101,12 @@ export const signInUser = createAsyncThunk<IUser, { email: string; password: str
         return rejectWithValue(errorData.message);
       }
 
-      const userData: IUser = await response.json();
+      const userData: ISignInAndSignUpResponse = await response.json();
+      console.log('userData', userData);
+      // Store tokens in cookies
+      Cookies.set('accessToken', userData.data.accessToken);
+      Cookies.set('refreshToken', userData.data.refreshToken);
+
       return userData;
     } catch (error) {
       return rejectWithValue('An error occurred during sign in');
@@ -29,11 +114,10 @@ export const signInUser = createAsyncThunk<IUser, { email: string; password: str
   }
 );
 
-
-export const signUpUser = createAsyncThunk<IUser, { username: string; email: string; password: string }>(
+// Sign up user
+export const signUpUser = createAsyncThunk<ISignInAndSignUpResponse, { username: string; email: string; password: string }>(
   'auth/signUpUser',
   async ({ username, email, password }, { rejectWithValue }) => {
-    console.log(username, email, password);
     try {
       const response = await fetch('http://localhost:4000/api/v1/auth/signup', {
         method: 'POST',
@@ -48,7 +132,11 @@ export const signUpUser = createAsyncThunk<IUser, { username: string; email: str
         return rejectWithValue(errorData.message);
       }
 
-      const userData: IUser = await response.json();
+      const userData: ISignInAndSignUpResponse = await response.json();
+      // Store tokens in cookies
+      Cookies.set('accessToken', userData.data.accessToken);
+      Cookies.set('refreshToken', userData.data.refreshToken);
+
       return userData;
     } catch (error) {
       return rejectWithValue('An error occurred during sign up');
@@ -56,10 +144,10 @@ export const signUpUser = createAsyncThunk<IUser, { username: string; email: str
   }
 );
 
-export const logoutUser = createAsyncThunk<void, { userId: string; refreshToken: string, accessToken: string }>(
+// Logout user
+export const logoutUser = createAsyncThunk<void, { userId: string; refreshToken: string; accessToken: string }>(
   'auth/logoutUser',
   async ({ userId, refreshToken, accessToken }, { rejectWithValue }) => {
-    console.log('I am in logout');
     try {
       const response = await fetch('http://localhost:4000/api/v1/auth/logout', {
         method: 'POST',
@@ -74,6 +162,10 @@ export const logoutUser = createAsyncThunk<void, { userId: string; refreshToken:
         const errorData = await response.json();
         return rejectWithValue(errorData.message);
       }
+
+      // Clear tokens from cookies
+      Cookies.remove('accessToken');
+      Cookies.remove('refreshToken');
 
       return;
     } catch (error) {

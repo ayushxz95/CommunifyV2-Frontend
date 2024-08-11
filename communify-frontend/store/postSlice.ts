@@ -136,7 +136,6 @@ const postSlice = createSlice({
       })
       .addCase(fetchAllPosts.fulfilled, (state, action) => {
         state.loading = false;
-        console.log(action.payload, "fetch vali check");
         state.posts = action.payload;
       })
       .addCase(fetchAllPosts.rejected, (state, action) => {
@@ -161,6 +160,7 @@ const postSlice = createSlice({
       })
       .addCase(createPost.fulfilled, (state, action) => {
         state.loading = false;
+        // @ts-ignore: Unreachable code error
         state.posts.push(action.payload);
       })
       .addCase(createPost.rejected, (state, action) => {

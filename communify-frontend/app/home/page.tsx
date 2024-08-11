@@ -20,7 +20,6 @@ import { FaPlus } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import Card from "../../components/card";
 import Footer from "../../components/footer";
-import Navbar from "../../components/navBar";
 
 const Transition = forwardRef(function Transition(
     props: TransitionProps & {
@@ -68,11 +67,6 @@ export default function Home() {
         try {
             const file = blobInfo.blob();
 
-            console.log("File object properties:");
-            console.log("Name:", file.name);
-            console.log("Size:", file.size);
-            console.log("Type:", file.type);
-
             const response = await fetch("http://localhost:4000/api/v1/upload/signed/url", {
                 method: "POST",
                 headers: {
@@ -87,10 +81,6 @@ export default function Home() {
 
                 const uploadResponse = await fetch(url, {
                     method: "PUT",
-                    // headers: {
-                    //     'Content-Type': file.type,
-                    //     'x-amz-acl': 'public-read'
-                    // },
                     body: file
                 });
 
@@ -150,7 +140,7 @@ export default function Home() {
 
     return (
         <div>
-            <Navbar />
+            {/* <Navbar /> */}
             <div className="fixed lg:right-44 right-2 top-26 lg:top-36 cursor-pointer rounded-full
                     w-12 h-12 bg-green-500 hover:border-2 hover:border-green-500 hover:bg-white text-white
                     hover:text-green-500 flex items-center justify-center" onClick={handleClickOpen}>

@@ -9,6 +9,17 @@ export interface IUser {
   updatedAt: number,
 }
 
+export interface ISignInResponseData {
+  accessToken: string,
+  refreshToken: string,
+  user: IUser,
+}
+
+export interface ISignInAndSignUpResponse {
+  data: ISignInResponseData,
+  success: boolean,
+}
+
 export interface IAnswer {
   id: string,
   content: string,

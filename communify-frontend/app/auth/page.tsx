@@ -3,7 +3,7 @@ import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from "react";
 import { FaGithub, FaGoogle, FaLinkedinIn, FaRegEnvelope, FaUser } from "react-icons/fa";
-import { MdLockOutline } from 'react-icons/md';
+import { MdLockOutline, MdVisibility, MdVisibilityOff } from 'react-icons/md';
 import { useSelector } from 'react-redux';
 import { signInUser, signUpUser } from '../../store/authSlice';
 import { useAppDispatch, type RootState } from '../../store/store';
@@ -19,8 +19,11 @@ export default function Auth() {
   const [password, setPassword] = useState<string>('');
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const router = useRouter();
+  const [showPassword, setShowPassword] = useState(false);
 
-  const abc = useSelector((state: RootState) => console.log(state));
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   useEffect(() => {
     if (user) {
@@ -204,29 +207,36 @@ export default function Auth() {
               </div>
 
               <div>
-                <div className="bg-gray-100 w-64 p-2 flex items-center">
+                <div className="bg-gray-100 w-64 p-2 flex items-center relative justify-between">
                   <MdLockOutline className="text-gray-400 m-2" />
                   <input
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     name="Password"
                     placeholder="Password"
-                    className="bg-gray-100 outline-none text-sm flex-1"
+                    className="bg-gray-100 outline-none text-sm flex-1 pr-[35px]"
                     value={password}
                     onChange={handleInputChange}
                   />
+                  <button
+                    type="button"
+                    onClick={togglePasswordVisibility}
+                    className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 mr-2"
+                  >
+                    {showPassword ? <MdVisibilityOff /> : <MdVisibility />}
+                  </button>
                 </div>
                 <div className="flex text-start mb-3">
                   {errors['Password'] && <span className="text-red-500 text-xs">{errors['Password']}</span>}
                 </div>
               </div>
 
-              <div className="flex justify-between w-64 mb-5">
+              {/* <div className="flex justify-between w-64 mb-5">
                 <label className="flex items-center text-xs">
                   <input type='checkbox' name='remember' className="mr-1" />
                   Remember me
                 </label>
                 <a href='a' className="text-xs">Forget Password</a>
-              </div>
+              </div> */}
               <button
                 className="border-2 border-green-500 text-green-500 rounded-full px-12 py-2 inline-block font-semibold hover:bg-green-500 hover:text-white"
                 onClick={() => { handleSubmit(isSignUpTabSelected) }}

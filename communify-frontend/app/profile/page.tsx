@@ -1,11 +1,10 @@
 "use client";
-import React, { useState } from 'react';
+import Footer from '@/components/footer';
+import Image from 'next/image';
+import { useState } from 'react';
 import { FaPen, FaUser } from 'react-icons/fa';
 import { MdDelete } from "react-icons/md";
-import Navbar from '@/components/navBar';
-import Footer from '@/components/footer';
 import TwoPeoplePuzzle from '../../images/twoPeoplePuzzle.jpg';
-import Image from 'next/image';
 
 type Tab = 'questions' | 'answers';
 
@@ -18,14 +17,14 @@ export default function Profile() {
 
     return (
         <div className=''>
-            <Navbar />
+            {/* <Navbar /> */}
             <div className="max-w-md mx-auto mt-30 bg-white rounded-xl shadow-2xl overflow-hidden md:max-w-2xl mt-8">
                 <div className="p-6">
                     <div className='flex lg:gap-10 gap-5 items-center relative'>
                         <div className="flex items-center justify-center rounded-full border border-green-500 lg:w-40 w-16 h-16 lg:h-40  bg-gray-100 group hover:bg-gray-200">
                             <FaUser className="lg:text-6xl text-xl text-gray-300" />
                             <div className='invisible group-hover:visible absolute'>
-                                <FaPen className='w-10 h-10'/>
+                                <FaPen className='w-10 h-10' />
                             </div>
                         </div>
                         <h1 className="text-2xl font-bold text-green-500">Ayush Dubey</h1>

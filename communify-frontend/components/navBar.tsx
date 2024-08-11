@@ -1,22 +1,20 @@
 'use client'
-import React from "react";
-import { FiMenu } from "react-icons/fi";
-import { FaQuestion, FaHome, FaUser } from "react-icons/fa";
-import { IoClose } from "react-icons/io5";
-import { IoChatbubblesOutline } from "react-icons/io5";
-import SearchBar from "./searchBar";
-import { useState } from "react";
-import type { RootState } from '../store/store';
-import { useSelector, useDispatch } from 'react-redux';
-import { logoutUser } from '../store/authSlice';
 import { useRouter } from 'next/navigation';
+import { useState } from "react";
+import { FaHome, FaQuestion, FaUser } from "react-icons/fa";
+import { FiMenu } from "react-icons/fi";
+import { IoChatbubblesOutline, IoClose } from "react-icons/io5";
+import { useSelector } from 'react-redux';
+import { logoutUser } from '../store/authSlice';
+import { useAppDispatch, type RootState } from '../store/store';
+import SearchBar from "./searchBar";
 
 const Navbar = () => {
   const user = useSelector((state: RootState) => state.auth.user);
   const refreshToken = useSelector((state: RootState) => state.auth.refreshToken);
   const accessToken = useSelector((state: RootState) => state.auth.accessToken);
-  console.log('navbar',user);
-  const dispatch = useDispatch();
+  console.log('navbar', user);
+  const dispatch = useAppDispatch();
   const router = useRouter();
   const [isSidenavOpen, setSideNav] = useState<boolean>(false);
 
@@ -29,10 +27,9 @@ const Navbar = () => {
   };
 
   const handleSignOut = () => {
-    // const { _id, refreshToken } = user;
     if (user) {
       console.log('id', user._id);
-      dispatch(logoutUser({ userId: user._id, refreshToken: refreshToken, accessToken: accessToken}))
+      dispatch(logoutUser({ userId: user._id, refreshToken: refreshToken, accessToken: accessToken }))
       router.push('/auth');
     }
   };

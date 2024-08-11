@@ -1,6 +1,4 @@
 'use client';
-import React from 'react';
-import Navbar from '@/components/navBar';
 import Banner from '@/components/banner';
 import Card from '@/components/card';
 import Footer from '@/components/footer';
@@ -11,7 +9,7 @@ export default function Page() {
   // const dispatch = useDispatch()
   return (
     <div>
-      <Navbar />
+      {/* <Navbar /> */}
       <div className='p-4 lg:p-8'>
         <RevealOnScroll>
           <div className='mt-4'>
