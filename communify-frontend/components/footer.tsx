@@ -18,7 +18,7 @@ const Footer = () => {
         delaySpeed: 2000,
     });
     return (
-        <footer className="bg-green-100 text-white py-6 mt-8">
+        <footer className="bg-green-100 text-white py-6 mt-8 fixed w-[100%] b-0">
             <div className="container mx-auto flex flex-col lg:flex-row justify-between lg:items-center px-4">
                 <div>
                     <div className="text-left text-3xl font-bold text-black">

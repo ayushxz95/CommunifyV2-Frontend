@@ -39,7 +39,7 @@ export default function Home() {
     const auth = useSelector((state: RootState) => state.auth);
 
     useEffect(() => {
-        dispatch(fetchAllPosts());
+        dispatch(fetchAllPosts({ refreshToken: auth.refreshToken, accessToken: auth.accessToken }));
     }, [dispatch]);
 
     const handleTitleChange = (e: any) => {
@@ -225,11 +225,21 @@ export default function Home() {
                 </DialogActions>
             </Dialog>
 
-            <div className="flex flex-col gap-y-8 mt-2 px-4 lg:px-0">
-                <Card />
-                <Card />
-                <Card />
-            </div>
+        <div className="flex flex-col gap-y-8 mt-2 px-4 lg:px-0">
+          {Object.values(posts.posts)?.map((post: any) => {
+            return (
+              <Card
+                key={post?._id}
+                postId={post?._id}
+                authorName={post?.authorName}
+                title={post?.title}
+                isSaved={post?.isSaved}
+                isLiked={post?.mostLikedAnswer?.isLiked}
+                mostLikedAnswers={post?.mostLikedAnswer?.content || 'No answers yet'}
+              />
+            );
+          })}
+        </div>
             <Footer />
         </div>
     );

@@ -49,7 +49,7 @@ export interface IPostForCreate {
 }
 
 export interface IPost {
-  id: string,
+  _id: string,
   title: string,
   description: string,
   authorId: string,
@@ -57,4 +57,10 @@ export interface IPost {
   images: Array<String>,
   createdAt: Number,
   updatedAt: Number,
+  isSaved: Boolean,
+  mostLikedAnswer: IMostLiked
+}
+
+export interface IMostLiked {
+  isLiked: Boolean,
 }
