@@ -1,5 +1,5 @@
 import { INITIAL_APP_STORE } from '@/constants';
-import { IPost, IPostForCreate } from '@/models';
+import { IPost, IPostForCreate, IPostWithTags } from '@/models';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { RootState } from './store';
 import { toast } from 'react-toastify';
@@ -13,6 +13,26 @@ export const fetchAllPosts = createAsyncThunk<IPost, { refreshToken: string, acc
 ('posts/fetchAllPosts', async ({ refreshToken, accessToken }, { rejectWithValue }) => {
   try {
     const response = await fetch(API_BASE_URL + '/all', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`,
+      },
+    });
+    if (!response.ok) {
+      throw new Error('Failed to fetch posts');
+    }
+    const { data } = await response.json();
+    return data.posts;
+  } catch (error) {
+    return rejectWithValue('Failed to fetch posts');
+  }
+});
+
+export const fetchAllPostsWithTags = createAsyncThunk<IPostWithTags, { refreshToken: string, accessToken: string }>
+('posts/fetchAllPostsWithTags', async ({ refreshToken, accessToken }, { rejectWithValue }) => {
+  try {
+    const response = await fetch(API_BASE_URL + '/all/post', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -267,7 +287,7 @@ const postSlice = createSlice({
       .addCase(fetchAllPosts.fulfilled, (state, action) => {
         state.loading = false;
         // @ts-ignore: Unreachable code error
-        state.posts = action.payload;
+        state.posts = [];
       })
       .addCase(fetchAllPosts.rejected, (state, action) => {
         state.loading = false;
@@ -346,6 +366,19 @@ const postSlice = createSlice({
         state.posts = action.payload;
       })
       .addCase(autoCompleteSearchPost.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(fetchAllPostsWithTags.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchAllPostsWithTags.fulfilled, (state, action) => {
+        state.loading = false;
+        // @ts-ignore: Unreachable code error
+        state.postWithTags = action.payload;
+      })
+      .addCase(fetchAllPostsWithTags.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       });

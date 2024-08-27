@@ -40,7 +40,7 @@ export default function Home() {
 
     useEffect(() => {
         dispatch(fetchAllPosts({ refreshToken: auth.refreshToken, accessToken: auth.accessToken }));
-    }, [dispatch]);
+    }, [dispatch, auth.refreshToken, auth.accessToken]);
 
     const handleTitleChange = (e: any) => {
         dispatch(updateTitle(e.target.value));
@@ -99,8 +99,6 @@ export default function Home() {
         }
     };
 
-
-
     const customFilePicker = (callback: any, value: any, meta: any) => {
         if (meta.filetype === "image") {
             const input = document.createElement("input");
@@ -129,7 +127,6 @@ export default function Home() {
         }
     };
 
-
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -139,7 +136,7 @@ export default function Home() {
     };
 
     return (
-        <div className="flex flex-col min-h-full">
+        <div className="flex flex-col min-h-screen">
             <div className="flex-grow">
                 <div className="fixed lg:right-44 right-2 top-26 lg:top-36 cursor-pointer rounded-full
                     w-12 h-12 bg-green-500 hover:border-2 hover:border-green-500 hover:bg-white text-white
@@ -226,8 +223,8 @@ export default function Home() {
                 </Dialog>
 
                 <div className="flex flex-col gap-y-8 mt-2 px-4 lg:px-0">
-                    {Object.values(posts.posts)?.map((post: any) => {
-                        return (
+                    {Object.values(posts.posts)?.length > 0 ? (
+                        Object.values(posts.posts).map((post: any) => (
                             <Card
                                 key={post?._id}
                                 postId={post?._id}
@@ -237,8 +234,12 @@ export default function Home() {
                                 isLiked={post?.mostLikedAnswer?.isLiked}
                                 mostLikedAnswers={post?.mostLikedAnswer?.content || 'No answers yet'}
                             />
-                        );
-                    })}
+                        ))
+                    ) : (
+                            <div className="flex items-center justify-center min-h-[calc(100vh-80px)]">
+                                <p className="text-gray-500 text-lg">No posts available</p>
+                            </div>
+                    )}
                 </div>
             </div>
             <Footer />

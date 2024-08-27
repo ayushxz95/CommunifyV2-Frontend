@@ -61,6 +61,16 @@ export interface IPost {
   mostLikedAnswer: IMostLiked
 }
 
+export interface IPostWithTags {
+  _id: string,
+  title: string,
+  description: string,
+  authorId: string,
+  createdAt: string,
+  updatedAt: string,
+  tags: Array<String>,
+}
+
 export interface IMostLiked {
   isLiked: Boolean,
 }

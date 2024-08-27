@@ -1,4 +1,4 @@
-import { IAnswer, IComment, IPost, IUser } from ".";
+import { IAnswer, IComment, IPost, IPostWithTags, IUser } from ".";
 
 interface IAuthStore {
     user?: IUser;
@@ -22,6 +22,7 @@ interface ICommentStore {
 
 interface IPostStore {
     posts: IPost[];
+    postWithTags: IPostWithTags[];
     loading: boolean;
     error: string | null;
     title: string;
