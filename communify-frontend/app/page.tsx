@@ -9,7 +9,6 @@ export default function Page() {
   // const dispatch = useDispatch()
   return (
     <div>
-      {/* <Navbar /> */}
       <div className='p-4 lg:p-8'>
         <RevealOnScroll>
           <div className='mt-4'>
@@ -19,7 +18,15 @@ export default function Page() {
         <div className='flex flex-col'>
           <RevealOnScroll>
             <div className='relative flex justify-start scale-75'>
-              <Card />
+              <Card
+                key={''}
+                postId={''}
+                authorName={'John Doe'}
+                title={'Where do we use rust ?'}
+                isSaved={false}
+                isLiked={false}
+                mostLikedAnswers={'Rust is a programming language designed to offer memory safety, concurrency, and performance, making it a popular choice for systems programming and other areas where these features are critical.'}
+              />
             </div>
           </RevealOnScroll>
           <RevealOnScroll>
@@ -28,13 +35,29 @@ export default function Page() {
               <div className='absolute top-0 right-36 w-5/12 h-80 bg-green-300 rounded-full mix-blend-multiply filter blur-2xl opacity-70'></div>
               <div className='absolute -bottom-8 right-20 w-5/12 h-80 bg-green-100 rounded-full mix-blend-multiply filter blur-2xl opacity-70'></div>
               <div className='relative'>
-                <Card />
+                <Card
+                  key={''}
+                  postId={''}
+                  authorName={'John Doe'}
+                  title={'Where do we use rust ?'}
+                  isSaved={false}
+                  isLiked={false}
+                  mostLikedAnswers={'Rust is a programming language designed to offer memory safety, concurrency, and performance, making it a popular choice for systems programming and other areas where these features are critical.'}
+                />
               </div>
             </div>
           </RevealOnScroll>
           <RevealOnScroll>
             <div className='flex justify-start scale-75'>
-              <Card />
+              <Card
+                key={''}
+                postId={''}
+                authorName={'John Doe'}
+                title={'Where do we use rust ?'}
+                isSaved={false}
+                isLiked={false}
+                mostLikedAnswers={'Rust is a programming language designed to offer memory safety, concurrency, and performance, making it a popular choice for systems programming and other areas where these features are critical.'}
+              />
             </div>
           </RevealOnScroll>
           <RevealOnScroll>
@@ -43,7 +66,15 @@ export default function Page() {
               <div className='absolute top-0 right-36 w-5/12 h-80 bg-green-300 rounded-full mix-blend-multiply filter blur-2xl opacity-70'></div>
               <div className='absolute -bottom-8 right-20 w-5/12 h-80 bg-green-100 rounded-full mix-blend-multiply filter blur-2xl opacity-70'></div>
               <div className='relative'>
-                <Card />
+                <Card
+                  key={''}
+                  postId={''}
+                  authorName={'John Doe'}
+                  title={'Where do we use rust ?'}
+                  isSaved={false}
+                  isLiked={false}
+                  mostLikedAnswers={'Rust is a programming language designed to offer memory safety, concurrency, and performance, making it a popular choice for systems programming and other areas where these features are critical.'}
+                />
               </div>
             </div>
           </RevealOnScroll>

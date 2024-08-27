@@ -139,107 +139,108 @@ export default function Home() {
     };
 
     return (
-        <div>
-            {/* <Navbar /> */}
-            <div className="fixed lg:right-44 right-2 top-26 lg:top-36 cursor-pointer rounded-full
+        <div className="flex flex-col min-h-full">
+            <div className="flex-grow">
+                <div className="fixed lg:right-44 right-2 top-26 lg:top-36 cursor-pointer rounded-full
                     w-12 h-12 bg-green-500 hover:border-2 hover:border-green-500 hover:bg-white text-white
                     hover:text-green-500 flex items-center justify-center" onClick={handleClickOpen}>
-                <FaPlus className="h-12" />
-            </div>
-            <Dialog
-                open={open}
-                TransitionComponent={Transition}
-                onClose={handleClose}
-            >
-                <DialogTitle>
-                    <div className="text-green-500">Add Question</div>
-                </DialogTitle>
-                <DialogContent>
-                    <DialogContentText>
-                        <div className="flex flex-col gap-4 mt-4">
-                            <div className="grid w-full items-center gap-2">
-                                <Label htmlFor="title" className="text-green-500">
-                                    Enter your question title
-                                </Label>
-                                <Input id="title" placeholder="Start the question" onChange={handleTitleChange} />
-                            </div>
-                            <div className="grid w-full items-center gap-2">
-                                <Label htmlFor="description" className="text-green-500">
-                                    Enter your question description
-                                </Label>
-                                <div className="relative">
-                                    <Editor
-                                        apiKey={EDITOR_API_KEY}
-                                        textareaName="content"
-                                        onEditorChange={(content) => {
-                                            setEditorContent(content);
-                                        }}
-                                        init={{
-                                            height: 300,
-                                            menubar: false,
-                                            branding: false,
-                                            placeholder: "Write your question here",
-                                            plugins: [
-                                                "advlist",
-                                                "autolink",
-                                                "lists",
-                                                "link",
-                                                "image",
-                                                "fullscreen",
-                                                "insertdatetime",
-                                                "media",
-                                                "table",
-                                                "code",
-                                                "help",
-                                                "wordcount",
-                                            ],
-                                            toolbar:
-                                                "undo redo | styles | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | image",
-                                            toolbar_mode: "sliding",
-                                            images_upload_url: "http://localhost:4000/api/v1/upload/signed/url",
-                                            automatic_uploads: true,
-                                            images_reuse_filename: true,
-                                            // @ts-ignore: Unreachable code error
-                                            images_upload_handler: handleImageUpload,
-                                            file_picker_callback: customFilePicker,
-                                        }}
-                                    />
+                    <FaPlus className="h-12" />
+                </div>
+                <Dialog
+                    open={open}
+                    TransitionComponent={Transition}
+                    onClose={handleClose}
+                >
+                    <DialogTitle>
+                        <div className="text-green-500">Add Question</div>
+                    </DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            <div className="flex flex-col gap-4 mt-4">
+                                <div className="grid w-full items-center gap-2">
+                                    <Label htmlFor="title" className="text-green-500">
+                                        Enter your question title
+                                    </Label>
+                                    <Input id="title" placeholder="Start the question" onChange={handleTitleChange} />
+                                </div>
+                                <div className="grid w-full items-center gap-2">
+                                    <Label htmlFor="description" className="text-green-500">
+                                        Enter your question description
+                                    </Label>
+                                    <div className="relative">
+                                        <Editor
+                                            apiKey={EDITOR_API_KEY}
+                                            textareaName="content"
+                                            onEditorChange={(content) => {
+                                                setEditorContent(content);
+                                            }}
+                                            init={{
+                                                height: 300,
+                                                menubar: false,
+                                                branding: false,
+                                                placeholder: "Write your question here",
+                                                plugins: [
+                                                    "advlist",
+                                                    "autolink",
+                                                    "lists",
+                                                    "link",
+                                                    "image",
+                                                    "fullscreen",
+                                                    "insertdatetime",
+                                                    "media",
+                                                    "table",
+                                                    "code",
+                                                    "help",
+                                                    "wordcount",
+                                                ],
+                                                toolbar:
+                                                    "undo redo | styles | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | image",
+                                                toolbar_mode: "sliding",
+                                                images_upload_url: "http://localhost:4000/api/v1/upload/signed/url",
+                                                automatic_uploads: true,
+                                                images_reuse_filename: true,
+                                                // @ts-ignore: Unreachable code error
+                                                images_upload_handler: handleImageUpload,
+                                                file_picker_callback: customFilePicker,
+                                            }}
+                                        />
+                                    </div>
+                                </div>
+                                <div className="grid w-full items-center gap-2">
+                                    <Label htmlFor="tag" className="text-green-500">
+                                        Tag
+                                    </Label>
+                                    <Input id="tag" placeholder="i.e React, CSS, HTML" onChange={handleTagChange} />
                                 </div>
                             </div>
-                            <div className="grid w-full items-center gap-2">
-                                <Label htmlFor="tag" className="text-green-500">
-                                    Tag
-                                </Label>
-                                <Input id="tag" placeholder="i.e React, CSS, HTML" onChange={handleTagChange} />
-                            </div>
-                        </div>
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <button onClick={handleClose} className="border-2 border-green-500 text-green-500 rounded-full px-12 py-2 inline-block font-semibold hover:bg-green-500 hover:text-white">
-                        Close
-                    </button>
-                    <button onClick={handleSubmit} className="border-2 border-green-500 text-green-500 rounded-full px-12 py-2 inline-block font-semibold hover:bg-green-500 hover:text-white">
-                        Submit
-                    </button>
-                </DialogActions>
-            </Dialog>
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <button onClick={handleClose} className="border-2 border-green-500 text-green-500 rounded-full px-12 py-2 inline-block font-semibold hover:bg-green-500 hover:text-white">
+                            Close
+                        </button>
+                        <button onClick={handleSubmit} className="border-2 border-green-500 text-green-500 rounded-full px-12 py-2 inline-block font-semibold hover:bg-green-500 hover:text-white">
+                            Submit
+                        </button>
+                    </DialogActions>
+                </Dialog>
 
-        <div className="flex flex-col gap-y-8 mt-2 px-4 lg:px-0">
-          {Object.values(posts.posts)?.map((post: any) => {
-            return (
-              <Card
-                key={post?._id}
-                postId={post?._id}
-                authorName={post?.authorName}
-                title={post?.title}
-                isSaved={post?.isSaved}
-                isLiked={post?.mostLikedAnswer?.isLiked}
-                mostLikedAnswers={post?.mostLikedAnswer?.content || 'No answers yet'}
-              />
-            );
-          })}
-        </div>
+                <div className="flex flex-col gap-y-8 mt-2 px-4 lg:px-0">
+                    {Object.values(posts.posts)?.map((post: any) => {
+                        return (
+                            <Card
+                                key={post?._id}
+                                postId={post?._id}
+                                authorName={post?.authorName}
+                                title={post?.title}
+                                isSaved={post?.isSaved}
+                                isLiked={post?.mostLikedAnswer?.isLiked}
+                                mostLikedAnswers={post?.mostLikedAnswer?.content || 'No answers yet'}
+                            />
+                        );
+                    })}
+                </div>
+            </div>
             <Footer />
         </div>
     );

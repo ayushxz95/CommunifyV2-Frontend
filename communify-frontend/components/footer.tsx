@@ -1,9 +1,6 @@
 "use client";
-import React from 'react';
 import { FaInstagram } from "react-icons/fa";
-import Image from 'next/image';
-import TwoPeopleWithPuzzle from "../images/twoPeoplePuzzle.jpg"
-import { useTypewriter, Cursor } from "react-simple-typewriter";
+import { Cursor, useTypewriter } from "react-simple-typewriter";
 
 const Footer = () => {
     const [text] = useTypewriter({
@@ -18,7 +15,7 @@ const Footer = () => {
         delaySpeed: 2000,
     });
     return (
-        <footer className="bg-green-100 text-white py-6 mt-8 fixed w-[100%] b-0">
+        <footer className="bg-green-100 text-white py-6 mt-8">
             <div className="container mx-auto flex flex-col lg:flex-row justify-between lg:items-center px-4">
                 <div>
                     <div className="text-left text-3xl font-bold text-black">

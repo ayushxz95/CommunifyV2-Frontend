@@ -21,7 +21,17 @@ export default function RootLayout({
         <Provider store={store}>
           <Navbar></Navbar>
           <Providers>{children}</Providers>
-          <ToastContainer />
+          <ToastContainer
+            position="bottom-right"
+            autoClose={5000}
+            hideProgressBar
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+          />
         </Provider>
       </body>
     </html>

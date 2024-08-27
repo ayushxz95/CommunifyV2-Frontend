@@ -13,7 +13,6 @@ const Navbar = () => {
   const user = useSelector((state: RootState) => state.auth.user);
   const refreshToken = useSelector((state: RootState) => state.auth.refreshToken);
   const accessToken = useSelector((state: RootState) => state.auth.accessToken);
-  console.log('navbar', user);
   const dispatch = useAppDispatch();
   const router = useRouter();
   const [isSidenavOpen, setSideNav] = useState<boolean>(false);
@@ -28,7 +27,6 @@ const Navbar = () => {
 
   const handleSignOut = () => {
     if (user) {
-      console.log('id', user._id);
       dispatch(logoutUser({ userId: user._id, refreshToken: refreshToken, accessToken: accessToken }))
       router.push('/auth');
     }

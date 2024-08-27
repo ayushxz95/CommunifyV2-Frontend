@@ -22,7 +22,7 @@ const initialState: Partial<IStore> = persistedState ? JSON.parse(persistedState
 export const store = configureStore({
   reducer: {
     // @ts-ignore: Unreachable code error
-    user: userReducer,
+    userProfile: userReducer,
     auth: authReducer,
     posts: postReducer,
     answers: answerReducer,

@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { INITIAL_APP_STORE } from '../constants';
 import { RootState } from './store';
 
-const API_BASE_URL = 'http://localhost:4000/api/v1/users';
+const API_BASE_URL = 'http://localhost:4000/api/v1/user';
 
 export const autocompleteSearchUser = createAsyncThunk(
   'users/autocompleteSearchUser',
@@ -36,18 +36,30 @@ export const searchUser = createAsyncThunk(
   }
 );
 
-export const fetchUserProfile = createAsyncThunk('users/fetchUserProfile', async (_, { rejectWithValue }) => {
-  try {
-    const response = await fetch(`${API_BASE_URL}/profile`);
-    if (!response.ok) {
-      throw new Error('Failed to fetch user profile');
+export const fetchUserProfile = createAsyncThunk<any, { refreshToken: string; accessToken: string }>(
+  'users/fetchUserProfile',
+  async ({ refreshToken, accessToken }, { rejectWithValue }) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/me`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`,
+        },
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        return rejectWithValue(errorData.message || 'Failed to fetch user profile');
+      }
+
+      const data = await response.json();
+      return data.data.user;
+    } catch (error) {
     }
-    const data = await response.json();
-    return data.user;
-  } catch (error) {
-    return rejectWithValue('Failed to fetch user profile');
   }
-});
+);
+
 
 export const updateUserProfile = createAsyncThunk(
   'users/updateUserProfile',
@@ -74,7 +86,7 @@ export const updateUserImage = createAsyncThunk(
   'users/updateUserImage',
   async ({ fileName }: { fileName: string }, { getState, rejectWithValue }) => {
     try {
-      const userId = (getState() as RootState).user.user?._id;
+      const userId = (getState() as RootState).userProfile.user?._id;
       if (!userId) {
         throw new Error('User not authenticated');
       }
@@ -108,7 +120,7 @@ const userSlice = createSlice({
       })
       .addCase(autocompleteSearchUser.fulfilled, (state, action) => {
         state.loading = false;
-        state.users = action.payload;
+        state.user = action.payload;
       })
       .addCase(autocompleteSearchUser.rejected, (state, action) => {
         state.loading = false;
@@ -120,7 +132,7 @@ const userSlice = createSlice({
       })
       .addCase(searchUser.fulfilled, (state, action) => {
         state.loading = false;
-        state.users = action.payload;
+        state.user = action.payload;
       })
       .addCase(searchUser.rejected, (state, action) => {
         state.loading = false;
@@ -167,9 +179,8 @@ const userSlice = createSlice({
   },
 });
 
-export const selectUser = (state: RootState) => state.user.user;
-export const selectUsers = (state: RootState) => state.user.users;
-export const selectLoading = (state: RootState) => state.user.loading;
-export const selectError = (state: RootState) => state.user.error;
+export const selectUser = (state: RootState) => state.userProfile.user;
+export const selectLoading = (state: RootState) => state.userProfile.loading;
+export const selectError = (state: RootState) => state.userProfile.error;
 
 export default userSlice.reducer;
