@@ -99,8 +99,6 @@ function ParticularQuestionDetails() {
     }
   };
 
-
-
   return (
     <div className="flex px-14 py-8 bg-green-50 gap-10 items-center">
       <div className="flex w-3/4 flex-col bg-white p-4 rounded-lg">

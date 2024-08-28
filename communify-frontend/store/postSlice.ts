@@ -55,7 +55,6 @@ export const fetchPostById = createAsyncThunk('posts/fetchPostById', async (post
       throw new Error('Failed to fetch post');
     }
     const responsedData = await response.json();
-    console.log('data->', responsedData.data.post);
     return responsedData.data.post;
   } catch (error) {
     return rejectWithValue('Failed to fetch post');
@@ -299,7 +298,6 @@ const postSlice = createSlice({
       })
       .addCase(fetchPostById.fulfilled, (state, action) => {
         state.loading = false;
-        console.log('action->', action.payload);
         state.posts = [action.payload];
       })
       .addCase(fetchPostById.rejected, (state, action) => {
