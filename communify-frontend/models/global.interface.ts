@@ -48,15 +48,21 @@ export interface IPostForCreate {
   tags: Array<String>,
 }
 
+export interface IAuthorId {
+  _id: string,
+  username: string,
+  profilePicture: string,
+}
+
 export interface IPost {
   _id: string,
   title: string,
   description: string,
-  authorId: string,
+  authorId: IAuthorId,
   tags: Array<String>,
   images: Array<String>,
-  createdAt: Number,
-  updatedAt: Number,
+  createdAt: string,
+  updatedAt: string,
   isSaved: Boolean,
   mostLikedAnswer: IMostLiked
 }

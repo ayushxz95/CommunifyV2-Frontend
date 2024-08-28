@@ -1,53 +1,52 @@
 import { INITIAL_APP_STORE } from '@/constants';
 import { IPost, IPostForCreate, IPostWithTags } from '@/models';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { RootState } from './store';
 import { toast } from 'react-toastify';
-import { stat } from 'fs';
+import { RootState } from './store';
 
 const API_BASE_URL = 'http://localhost:4000/api/v1/post';
 const API_BASE_URL_FOR_SAVE_POST = 'http://localhost:4000/api/v1/savedPost';
 const API_BASE_URL_FOR_ANSWER_AND_REACTION = 'http://localhost:4000/api/v1/answer'
 
 export const fetchAllPosts = createAsyncThunk<IPost, { refreshToken: string, accessToken: string }>
-('posts/fetchAllPosts', async ({ refreshToken, accessToken }, { rejectWithValue }) => {
-  try {
-    const response = await fetch(API_BASE_URL + '/all', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${accessToken}`,
-      },
-    });
-    if (!response.ok) {
-      throw new Error('Failed to fetch posts');
+  ('posts/fetchAllPosts', async ({ refreshToken, accessToken }, { rejectWithValue }) => {
+    try {
+      const response = await fetch(API_BASE_URL + '/all', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`,
+        },
+      });
+      if (!response.ok) {
+        throw new Error('Failed to fetch posts');
+      }
+      const { data } = await response.json();
+      return data.posts;
+    } catch (error) {
+      return rejectWithValue('Failed to fetch posts');
     }
-    const { data } = await response.json();
-    return data.posts;
-  } catch (error) {
-    return rejectWithValue('Failed to fetch posts');
-  }
-});
+  });
 
 export const fetchAllPostsWithTags = createAsyncThunk<IPostWithTags, { refreshToken: string, accessToken: string }>
-('posts/fetchAllPostsWithTags', async ({ refreshToken, accessToken }, { rejectWithValue }) => {
-  try {
-    const response = await fetch(API_BASE_URL + '/all/post', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${accessToken}`,
-      },
-    });
-    if (!response.ok) {
-      throw new Error('Failed to fetch posts');
+  ('posts/fetchAllPostsWithTags', async ({ refreshToken, accessToken }, { rejectWithValue }) => {
+    try {
+      const response = await fetch(API_BASE_URL + '/all/post', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`,
+        },
+      });
+      if (!response.ok) {
+        throw new Error('Failed to fetch posts');
+      }
+      const { data } = await response.json();
+      return data.posts;
+    } catch (error) {
+      return rejectWithValue('Failed to fetch posts');
     }
-    const { data } = await response.json();
-    return data.posts;
-  } catch (error) {
-    return rejectWithValue('Failed to fetch posts');
-  }
-});
+  });
 
 export const fetchPostById = createAsyncThunk('posts/fetchPostById', async (postId: string, { rejectWithValue }) => {
   try {
@@ -55,8 +54,9 @@ export const fetchPostById = createAsyncThunk('posts/fetchPostById', async (post
     if (!response.ok) {
       throw new Error('Failed to fetch post');
     }
-    const data = await response.json();
-    return data.post;
+    const responsedData = await response.json();
+    console.log('data->', responsedData.data.post);
+    return responsedData.data.post;
   } catch (error) {
     return rejectWithValue('Failed to fetch post');
   }
@@ -187,7 +187,7 @@ export const unSavePost = createAsyncThunk<string, { postId: string, refreshToke
   }
 );
 
-export const likePost = createAsyncThunk<{postId: string, reactionType: string}, { postId: string, reactionType: string, refreshToken: string, accessToken: string }>(
+export const likePost = createAsyncThunk<{ postId: string, reactionType: string }, { postId: string, reactionType: string, refreshToken: string, accessToken: string }>(
   'posts/likePost',
   async ({ postId, reactionType, refreshToken, accessToken }, { rejectWithValue }) => {
     try {
@@ -299,6 +299,7 @@ const postSlice = createSlice({
       })
       .addCase(fetchPostById.fulfilled, (state, action) => {
         state.loading = false;
+        console.log('action->', action.payload);
         state.posts = [action.payload];
       })
       .addCase(fetchPostById.rejected, (state, action) => {

@@ -1,16 +1,31 @@
 'use client';
 import { EDITOR_API_KEY } from "@/config";
+import { fetchPostById } from "@/store/postSlice";
+import { RootState, useAppDispatch } from "@/store/store";
 import { Editor } from "@tinymce/tinymce-react";
+import DOMPurify from "dompurify";
 import Image from "next/image";
-import { useState } from "react";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 import { FaUser } from "react-icons/fa";
+import { useSelector } from "react-redux";
 import QuestionMark from "../../../images/threePeopleWithQuestion.jpg";
 
 function ParticularQuestionDetails() {
+  const dispatch = useAppDispatch();
   const [editorContent, setEditorContent] = useState<string>("");
+  const pathname = usePathname()
+  const pathSegments = pathname.split('/');
+  const id = pathSegments[pathSegments.length - 1];
+  const postData = useSelector((state: RootState) => state.posts.posts[0]);
+
+  useEffect(() => {
+    if (id) {
+      dispatch(fetchPostById(id));
+    }
+  }, [dispatch]);
 
   const handleImageUpload = async (blobInfo: any, success: any, failure: any) => {
-    console.log("I am in handleImageUpload");
 
     try {
       const file = blobInfo.blob();
@@ -47,7 +62,14 @@ function ParticularQuestionDetails() {
     }
   };
 
-
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return new Intl.DateTimeFormat('en-GB', {
+      day: '2-digit',
+      month: 'long',
+      year: 'numeric'
+    }).format(date);
+  };
 
   const customFilePicker = (callback: any, value: any, meta: any) => {
     if (meta.filetype === "image") {
@@ -77,15 +99,17 @@ function ParticularQuestionDetails() {
     }
   };
 
+
+
   return (
     <div className="flex px-14 py-8 bg-green-50 gap-10 items-center">
       <div className="flex w-3/4 flex-col bg-white p-4 rounded-lg">
         <div className="flex gap-4">
           <div className="w-10 h-10 rounded-full flex items-center justify-center bg-gray-200"><FaUser /></div>
           <div className="">
-            <div className="text-2xl font-semibold">Why Next.js is faster than React.js ?</div>
+            <div className="text-2xl font-semibold">{postData?.title} ?</div>
             <div className="text-gray-400 mt-2">
-              Posted by <span className="text-green-500">Anthony Robert</span> on <span className="text-green-500">26 May 2024.</span>
+              Posted by <span className="text-green-500">{postData?.authorId?.username.toUpperCase()}</span> on <span className="text-green-500">{postData?.createdAt ? formatDate(postData?.createdAt) : null}.</span>
             </div>
             <div className="flex items-center gap-4 mt-4">
               <div className="p-1 flex items-center bg-green-100 rounded-md text-green-500 border-2 border-green-500 border-solid">
@@ -102,8 +126,14 @@ function ParticularQuestionDetails() {
         </div>
         <div className="h-1 bg-gray-200 w-full mt-8"></div>
         <div className="mt-4 p-2">
-          Next. js consumes server resources, thereby offering a faster site to the client, but it comes with a cost for the server delivering the site. On the other hand, Pure React is rendered on the client side, which might be a bit slower but it's a cost-saving approach for whoever serves the site.
-          Next. js consumes server resources, thereby offering a faster site to the client, but it comes with a cost for the server delivering the site. On the other hand, Pure React is rendered on the client side, which might be a bit slower but it's a cost-saving approach for whoever serves the site.
+          <div className="break-all">
+            <div className="prose max-w-full" dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(postData?.description, {
+                ADD_TAGS: ['iframe'],
+                ADD_ATTR: ['frameborder', 'allowfullscreen', 'tooltip', 'target']
+              })
+            }} />
+          </div>
         </div>
         <div className="font-semibold text-xl mt-4">2 Answers</div>
         <div className="h-1 bg-gray-200 w-full mt-4 border-t border-dotted"></div>

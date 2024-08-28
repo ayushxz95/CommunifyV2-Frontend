@@ -1,7 +1,7 @@
 'use client';
 
-import Footer from '@/components/footer'
-import QuestionCard from '@/components/questionCard'
+import Footer from '@/components/footer';
+import QuestionCard from '@/components/questionCard';
 import { fetchAllPostsWithTags } from '@/store/postSlice';
 import { RootState, useAppDispatch } from "@/store/store";
 import { useEffect } from 'react';
@@ -23,7 +23,7 @@ export default function QuestionList() {
         {Object.values(posts?.postWithTags)?.length > 0 ? (
           Object.values(posts?.postWithTags).map((post: any) => (
             <QuestionCard
-              key={post?._id}
+              id={post?._id}
               title={post?.title}
               description={post?.description}
               tags={post?.tags}
